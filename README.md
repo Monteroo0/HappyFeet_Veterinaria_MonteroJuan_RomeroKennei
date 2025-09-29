@@ -1,4 +1,4 @@
-![img.png](img.png)# 🐾 Sistema de Gestión Veterinaria HappyFeet
+# 🐾 Sistema de Gestión Veterinaria HappyFeet
 
 ## Descripción del Proyecto
 
