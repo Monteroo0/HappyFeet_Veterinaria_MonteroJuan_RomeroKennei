@@ -123,4 +123,94 @@ CREATE TABLE items_factura (
     FOREIGN KEY (producto_id) REFERENCES inventario(id)
         ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-);
+
+-- =========================================
+-- TABLAS PARA ACTIVIDADES ESPECIALES
+-- =========================================
+
+CREATE TABLE proveedores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    contacto VARCHAR(255),
+    telefono VARCHAR(20),
+    email VARCHAR(100),
+    direccion VARCHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE mascotas_adopcion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    raza_id INT,
+    edad_estimada VARCHAR(50),
+    sexo ENUM('Macho', 'Hembra'),
+    descripcion TEXT,
+    estado ENUM('Disponible', 'En Proceso', 'Adoptada') DEFAULT 'Disponible',
+    fecha_ingreso DATE NOT NULL,
+    url_foto VARCHAR(255),
+    FOREIGN KEY (raza_id) REFERENCES razas(id)
+        ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE contratos_adopcion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mascota_adopcion_id INT NOT NULL,
+    adoptante_nombre VARCHAR(255) NOT NULL,
+    adoptante_documento VARCHAR(20) NOT NULL,
+    adoptante_telefono VARCHAR(20),
+    adoptante_direccion VARCHAR(255),
+    fecha_adopcion DATE NOT NULL,
+    contrato_texto TEXT NOT NULL,
+    FOREIGN KEY (mascota_adopcion_id) REFERENCES mascotas_adopcion(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE jornadas_vacunacion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    descripcion TEXT,
+    activa BOOLEAN DEFAULT TRUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE registros_jornada (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jornada_id INT NOT NULL,
+    mascota_nombre VARCHAR(100) NOT NULL,
+    dueno_nombre VARCHAR(255) NOT NULL,
+    dueno_telefono VARCHAR(20),
+    vacuna_aplicada VARCHAR(255) NOT NULL,
+    fecha_aplicacion DATETIME NOT NULL,
+    FOREIGN KEY (jornada_id) REFERENCES jornadas_vacunacion(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE club_puntos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dueno_id INT NOT NULL,
+    puntos_acumulados INT DEFAULT 0,
+    fecha_ultima_actividad DATE,
+    FOREIGN KEY (dueno_id) REFERENCES duenos(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE transacciones_puntos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    club_puntos_id INT NOT NULL,
+    tipo ENUM('Ganados', 'Canjeados') NOT NULL,
+    puntos INT NOT NULL,
+    descripcion VARCHAR(255),
+    fecha_transaccion DATETIME NOT NULL,
+    FOREIGN KEY (club_puntos_id) REFERENCES club_puntos(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE contactos_emergencia (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dueno_id INT NOT NULL,
+    nombre_contacto VARCHAR(255) NOT NULL,
+    telefono_contacto VARCHAR(20) NOT NULL,
+    relacion VARCHAR(100),
+    FOREIGN KEY (dueno_id) REFERENCES duenos(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

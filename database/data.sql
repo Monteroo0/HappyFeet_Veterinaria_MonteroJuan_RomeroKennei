@@ -101,3 +101,35 @@ INSERT INTO items_factura (factura_id, producto_id, servicio_descripcion, cantid
 (2, 2, NULL, 1, 120000.00, 120000.00),
 (3, 4, NULL, 1, 180000.00, 180000.00);
 
+-- ===========================
+-- DATOS PARA ACTIVIDADES ESPECIALES
+-- ===========================
+
+-- Proveedores
+INSERT INTO proveedores (nombre, contacto, telefono, email, direccion) VALUES
+('Distribuidora VetSupply', 'María García', '6074567890', 'ventas@vetsupply.com', 'Calle 42 #23-15, Bucaramanga'),
+('Laboratorios VetMed', 'Carlos López', '6075678901', 'pedidos@vetmed.com', 'Carrera 33 #18-40, Bucaramanga'),
+('Importadora PetCare', 'Ana Rodríguez', '6076789012', 'compras@petcare.com', 'Avenida Santander #25-30, Bucaramanga');
+
+-- Club de puntos (algunos dueños registrados)
+INSERT INTO club_puntos (dueno_id, puntos_acumulados, fecha_ultima_actividad) VALUES
+(1, 150, '2025-09-20'),
+(2, 280, '2025-09-15'),
+(3, 75, '2025-09-10');
+
+-- Transacciones de puntos
+INSERT INTO transacciones_puntos (club_puntos_id, tipo, puntos, descripcion, fecha_transaccion) VALUES
+(1, 'Ganados', 50, 'Registro en el club', '2025-09-01 10:00:00'),
+(1, 'Ganados', 100, 'Compra por $175000', '2025-09-20 15:30:00'),
+(2, 'Ganados', 50, 'Registro en el club', '2025-08-15 09:00:00'),
+(2, 'Ganados', 120, 'Compra por $120000', '2025-09-15 11:00:00'),
+(2, 'Ganados', 110, 'Consulta y vacunación', '2025-09-15 11:30:00'),
+(3, 'Ganados', 50, 'Registro en el club', '2025-08-20 14:00:00'),
+(3, 'Ganados', 25, 'Consulta veterinaria', '2025-09-10 16:00:00');
+
+-- Contactos de emergencia
+INSERT INTO contactos_emergencia (dueno_id, nombre_contacto, telefono_contacto, relacion) VALUES
+(1, 'Pedro Rueda', '6073456789', 'Hermano'),
+(2, 'José López', '6074567890', 'Esposo'),
+(3, 'Carmen Torres', '6075678901', 'Hermana');
+
