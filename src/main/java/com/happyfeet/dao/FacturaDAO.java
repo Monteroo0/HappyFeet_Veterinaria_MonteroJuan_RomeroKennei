@@ -14,7 +14,7 @@ public class FacturaDAO {
     public int guardar(Factura factura) {
         String sql = "INSERT INTO facturas (dueno_id, fecha_emision, total) VALUES (?, ?, ?)";
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, factura.getDuenoId());
@@ -50,7 +50,7 @@ public class FacturaDAO {
     private void guardarItemFactura(ItemFactura item) {
         String sql = "INSERT INTO items_factura (factura_id, producto_id, servicio_descripcion, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, item.getFacturaId());
@@ -82,7 +82,7 @@ public class FacturaDAO {
 
         List<Factura> facturas = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -117,7 +117,7 @@ public class FacturaDAO {
             WHERE f.id = ?
             """;
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, facturaId);
@@ -159,7 +159,7 @@ public class FacturaDAO {
 
         List<ItemFactura> items = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, facturaId);
@@ -202,7 +202,7 @@ public class FacturaDAO {
 
         List<Factura> facturas = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, duenoId);

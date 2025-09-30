@@ -11,7 +11,7 @@ public class DuenoDAO {
 
     public void guardar(Dueno dueno) {
         String sql = "INSERT INTO duenos (nombre_completo, documento_identidad, direccion, telefono, email) VALUES (?,?,?,?,?)";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection_Legacy();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, dueno.getNombreCompleto());
@@ -30,7 +30,7 @@ public class DuenoDAO {
     public List<Dueno> listar() {
         List<Dueno> lista = new ArrayList<>();
         String sql = "SELECT * FROM duenos";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection_Legacy();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 

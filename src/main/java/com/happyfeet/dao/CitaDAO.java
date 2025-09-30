@@ -14,7 +14,7 @@ public class CitaDAO {
     public void guardar(Cita cita) {
         String sql = "INSERT INTO citas (mascota_id, fecha_hora, motivo, estado_id) VALUES (?, ?, ?, ?)";
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, cita.getMascotaId());
@@ -44,7 +44,7 @@ public class CitaDAO {
 
         List<Cita> citas = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -71,7 +71,7 @@ public class CitaDAO {
     public void actualizarEstado(int citaId, int nuevoEstadoId) {
         String sql = "UPDATE citas SET estado_id = ? WHERE id = ?";
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, nuevoEstadoId);
@@ -93,7 +93,7 @@ public class CitaDAO {
         String sql = "SELECT id, nombre FROM cita_estados ORDER BY id";
         List<CitaEstado> estados = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -126,7 +126,7 @@ public class CitaDAO {
 
         List<Cita> citas = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, mascotaId);

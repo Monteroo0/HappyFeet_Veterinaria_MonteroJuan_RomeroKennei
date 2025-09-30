@@ -214,3 +214,79 @@ CREATE TABLE contactos_emergencia (
     FOREIGN KEY (dueno_id) REFERENCES duenos(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =========================================
+-- TABLA PARA PROCEDIMIENTOS ESPECIALES
+-- =========================================
+
+CREATE TABLE procedimientos_especiales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mascota_id INT NOT NULL,
+    tipo_procedimiento ENUM('Cirugía', 'Tratamiento Complejo', 'Procedimiento Especializado') NOT NULL,
+    fecha_procedimiento DATETIME NOT NULL,
+    veterinario_responsable VARCHAR(255) NOT NULL,
+
+    -- Información preoperatoria
+    diagnostico_preoperatorio TEXT NOT NULL,
+    analisis_previos TEXT,
+    medicacion_previa TEXT,
+    ayuno_requerido BOOLEAN DEFAULT FALSE,
+    alergias_conocidas TEXT,
+
+    -- Detalles del procedimiento
+    descripcion_procedimiento TEXT NOT NULL,
+    anestesia_utilizada VARCHAR(255),
+    duracion_minutos INT,
+    complicaciones TEXT,
+    observaciones TEXT,
+
+    -- Seguimiento postoperatorio
+    medicacion_postoperatoria TEXT,
+    cuidados_especiales TEXT NOT NULL,
+    proxima_revision DATE,
+    restricciones TEXT,
+    estado_actual ENUM('En Recuperación', 'Seguimiento', 'Alta Médica') DEFAULT 'En Recuperación',
+
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (mascota_id) REFERENCES mascotas(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =========================================
+-- TABLA PARA HISTORIAL DE TRANSFERENCIAS
+-- =========================================
+
+CREATE TABLE transferencias_propiedad (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mascota_id INT NOT NULL,
+    dueno_anterior_id INT NOT NULL,
+    dueno_nuevo_id INT NOT NULL,
+    fecha_transferencia DATETIME NOT NULL,
+    motivo VARCHAR(255),
+    observaciones TEXT,
+    FOREIGN KEY (mascota_id) REFERENCES mascotas(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (dueno_anterior_id) REFERENCES duenos(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (dueno_nuevo_id) REFERENCES duenos(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =========================================
+-- TABLA PARA RELACIÓN INVENTARIO-PROVEEDORES
+-- =========================================
+
+CREATE TABLE inventario_proveedores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    inventario_id INT NOT NULL,
+    proveedor_id INT NOT NULL,
+    es_proveedor_principal BOOLEAN DEFAULT FALSE,
+    precio_compra DECIMAL(10, 2),
+    tiempo_entrega_dias INT,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (inventario_id) REFERENCES inventario(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (proveedor_id) REFERENCES proveedores(id)
+        ON DELETE CASCADE,
+    UNIQUE KEY unique_inventario_proveedor (inventario_id, proveedor_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
