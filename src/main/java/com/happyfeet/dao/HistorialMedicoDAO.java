@@ -14,7 +14,7 @@ public class HistorialMedicoDAO {
     public void guardar(HistorialMedico historial) {
         String sql = "INSERT INTO historial_medico (mascota_id, fecha_evento, evento_tipo_id, descripcion, diagnostico, tratamiento_recomendado) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, historial.getMascotaId());
@@ -46,7 +46,7 @@ public class HistorialMedicoDAO {
 
         List<HistorialMedico> historiales = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -87,7 +87,7 @@ public class HistorialMedicoDAO {
 
         List<HistorialMedico> historiales = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, mascotaId);
@@ -120,7 +120,7 @@ public class HistorialMedicoDAO {
         String sql = "SELECT id, nombre FROM evento_tipos ORDER BY id";
         List<EventoTipo> tipos = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 

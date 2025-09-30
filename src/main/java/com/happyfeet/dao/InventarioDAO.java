@@ -14,7 +14,7 @@ public class InventarioDAO {
     public void guardar(Inventario inventario) {
         String sql = "INSERT INTO inventario (nombre_producto, producto_tipo_id, descripcion, fabricante, lote, cantidad_stock, stock_minimo, fecha_vencimiento, precio_venta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, inventario.getNombreProducto());
@@ -47,7 +47,7 @@ public class InventarioDAO {
 
         List<Inventario> productos = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -82,7 +82,7 @@ public class InventarioDAO {
     public boolean actualizarStock(int productoId, int nuevaCantidad) {
         String sql = "UPDATE inventario SET cantidad_stock = ? WHERE id = ?";
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, nuevaCantidad);
@@ -101,7 +101,7 @@ public class InventarioDAO {
         // Primero verificar si el producto existe y tiene suficiente stock
         String sqlSelect = "SELECT id, cantidad_stock FROM inventario WHERE nombre_producto = ?";
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sqlSelect)) {
 
             ps.setString(1, nombreProducto);
@@ -143,7 +143,7 @@ public class InventarioDAO {
 
         List<Inventario> productos = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, "%" + nombre + "%");
@@ -175,7 +175,7 @@ public class InventarioDAO {
 
         List<Inventario> productos = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -205,7 +205,7 @@ public class InventarioDAO {
 
         List<Inventario> productos = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, diasAlerta);
@@ -228,7 +228,7 @@ public class InventarioDAO {
         String sql = "SELECT id, nombre FROM producto_tipos ORDER BY id";
         List<ProductoTipo> tipos = new ArrayList<>();
 
-        try (Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection_Legacy();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 

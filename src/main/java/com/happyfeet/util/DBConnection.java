@@ -4,37 +4,64 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Patrón Singleton para la gestión de conexiones a la base de datos
+ * Asegura una única instancia de configuración en toda la aplicación
+ */
 public class DBConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/happyfeet";
     private static final String USER = "root";
-    private static final String PASSWORD = "1234";
+    private static final String PASSWORD = "campus2023";
 
+    // Instancia única del Singleton
+    private static DBConnection instance;
+
+    // Constructor privado para evitar instanciación externa
     private DBConnection() {
-        // Constructor privado para evitar instanciación
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("❌ Driver JDBC no encontrado: " + e.getMessage());
+            throw new RuntimeException("Fallo al cargar el driver", e);
+        }
     }
 
-    public static Connection getConnection() throws SQLException {
+    /**
+     * Método estático para obtener la única instancia (Patrón Singleton)
+     */
+    public static synchronized DBConnection getInstance() {
+        if (instance == null) {
+            instance = new DBConnection();
+        }
+        return instance;
+    }
+
+    /**
+     * Obtiene una nueva conexión a la base de datos
+     */
+    public Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Carga el driver
             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión exitosa a happyfeet!");
             return conn;
-        } catch (ClassNotFoundException e) {
-            System.err.println("Driver JDBC no encontrado: " + e.getMessage());
-            throw new SQLException("Fallo al cargar el driver", e);
         } catch (SQLException e) {
-            System.err.println("Error al conectar: " + e.getMessage());
+            System.err.println("❌ Error al conectar a la base de datos: " + e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * Método legacy para compatibilidad con código existente
+     */
+    public static Connection getConnection_Legacy() throws SQLException {
+        return getInstance().getConnection();
     }
 
     public static void closeConnection(Connection conn) {
         if (conn != null) {
             try {
                 conn.close();
-                System.out.println("Conexión cerrada.");
             } catch (SQLException e) {
-                System.err.println("Error al cerrar: " + e.getMessage());
+                System.err.println("❌ Error al cerrar conexión: " + e.getMessage());
             }
         }
     }
